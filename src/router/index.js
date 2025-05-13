@@ -67,13 +67,9 @@ const routes = [
 ];
 
 const router = createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL),
+    history: createWebHashHistory(),  // вместо createWebHistory()
     routes,
-    scrollBehavior(to, from, savedPosition) {
-        return savedPosition || { top: 0 };
-    }
 });
-
 router.beforeEach((to, from, next) => {
     const isAuthenticated = !!localStorage.getItem('user');
     console.log(`Navigating to: ${to.name}, authenticated: ${isAuthenticated}`);
@@ -93,5 +89,6 @@ router.beforeEach((to, from, next) => {
         next();
     }
 });
+
 
 export default router;

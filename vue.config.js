@@ -1,3 +1,3 @@
 module.exports = {
-    publcPath: '/ertyu/'
+    publcPath: '/praject/'
 }
