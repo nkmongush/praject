@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
+  <div id="app" class="pattern-background" :style="{ backgroundImage: `url(${pattern})` }">
     <header>
-      <img :src="logoUrl" alt="Логотип LevelUP" class="logo-image">
+      <img :src="logoUrl" alt="Логотип LevelUP" class="logo-image" />
       <h1 class="logo"></h1>
       <nav>
         <router-link to="/">Товары</router-link> |
@@ -60,6 +60,8 @@
 import { ref, provide, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import logo from './assets/logo.png'; 
+import pattern from './assets/pattern.png';
+
 const cartItems = ref([]);
 const isLoggedIn = ref(localStorage.getItem('user') !== null);
 const router = useRouter();
@@ -114,7 +116,7 @@ const logout = () => {
 };
 
 const onLoginSuccess = () => {
-  isLoggedIn.value = true
+  isLoggedIn.value = true;
 }
 
 const logoUrl = logo; // Use the imported logo
@@ -299,13 +301,14 @@ main {
   height: auto;
   margin-right: 10px;
 }
+
 .pattern-background {
-  background-image: url('./assets/pattern.png');
   background-repeat: repeat;
   background-size: auto;
   background-position: center;
   background-attachment: fixed;
   min-height: 100vh;
   width: 100%;
+  background-color: #8881881c; 
 }
 </style>

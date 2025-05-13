@@ -1,14 +1,33 @@
 <template>
-  <div class="user-profile">
-    <h2>Профиль пользователя</h2>
-    <div v-if="user">
-      <p><strong>Имя:</strong> {{ user.name }}</p>
-      <p><strong>Email:</strong> {{ user.email }}</p>
-      <p><strong>Имя пользователя:</strong> {{ user.username }}</p>
+  <div class="page-container">
+    <div class="user-profile">
+      <h2>Профиль пользователя</h2>
+      <div v-if="user">
+        <p><strong>Имя:</strong> {{ user.name }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Имя пользователя:</strong> {{ user.username }}</p>
+
+        <h3>Ваши заказы</h3>
+        <div v-if="orders.length > 0" class="orders-list">
+          <div v-for="order in orders" :key="order.id" class="order-card">
+            <p><strong>Дата:</strong> {{ order.date }}</p>
+            <p><strong>Итого:</strong> ${{ order.total.toFixed(2) }}</p>
+            <ul>
+              <li v-for="(item, idx) in order.items" :key="idx">
+                {{ item.name }} - {{ item.quantity }} × ${{ item.price }}
+              </li>
+            </ul>
+          </div>
+        </div>
+        <p v-else>Заказы отсутствуют.</p>
+      </div>
+      <div v-else>
+        <p>Пользователь не найден.</p>
+      </div>
     </div>
-    <div v-else>
-      <p>Пользователь не найден.</p>
-    </div>
+    <footer class="site-footer">
+      © 2025 Магазин LevelUP. Все права защищены.
+    </footer>
   </div>
 </template>
 
@@ -20,28 +39,46 @@ const route = useRoute();
 const username = ref(route.params.username);
 
 const user = ref(null);
+const orders = ref([]);
 
 onMounted(() => {
-  // Получаем данные пользователя из localStorage
+  // Получаем пользователя
   const storedUser = localStorage.getItem('user');
   if (storedUser) {
     try {
       const userData = JSON.parse(storedUser);
-        console.log("userData.username:",userData.username, "username:",username)
       if (userData.username === username.value) {
-        // Если имя пользователя совпадает, показываем данные
         user.value = userData;
       }
     } catch (error) {
       console.error("Ошибка при парсинге данных пользователя:", error);
     }
   }
+
+  // Получаем заказы из localStorage
+  const storedOrders = localStorage.getItem('orders');
+  if (storedOrders) {
+    try {
+      const allOrders = JSON.parse(storedOrders);
+      // Фильтруем заказы текущего пользователя
+      orders.value = allOrders.filter(order => order.username === username.value);
+    } catch (error) {
+      console.error("Ошибка при парсинге заказов:", error);
+    }
+  }
 });
 </script>
 
 <style scoped>
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 .user-profile {
-  max-width: 480px;
+  flex-grow: 1;
+  max-width: 600px;
   margin: 40px auto;
   background: #fff;
   padding: 30px 28px;
@@ -51,11 +88,12 @@ onMounted(() => {
   color: #333;
 }
 
-.user-profile h2 {
+.user-profile h2,
+.user-profile h3 {
   text-align: center;
-  margin-bottom: 25px;
-  font-weight: 700;
   color: #673ab7;
+  margin-bottom: 20px;
+  font-weight: 700;
   letter-spacing: 1.2px;
 }
 
@@ -72,15 +110,42 @@ onMounted(() => {
   display: inline-block;
 }
 
-.user-profile div[ v-cloak ] {
-  display: none;
-}
-
-.user-profile > div:last-child p {
-  text-align: center;
-  font-style: italic;
-  color: #777;
+.orders-list {
   margin-top: 20px;
 }
 
+.order-card {
+  background: #f6f6f6;
+  border-radius: 8px;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(103, 58, 183, 0.1);
+}
+
+.order-card p {
+  margin: 6px 0;
+  font-weight: 600;
+  color: #555;
+}
+
+.order-card ul {
+  list-style: disc inside;
+  margin-top: 10px;
+  color: #444;
+}
+
+.order-card ul li {
+  margin-bottom: 4px;
+}
+
+.site-footer {
+  background-color: #673ab7;
+  color: white;
+  text-align: center;
+  padding: 15px 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-top: auto;
+  user-select: none;
+}
 </style>

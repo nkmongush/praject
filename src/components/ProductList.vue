@@ -115,15 +115,9 @@ const addToCart = (product) => {
 }
 
 
-.product-item {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* распределяет содержимое равномерно */
-  height: 100%; /* чтобы карточки были одинаковой высоты */
-  box-sizing: border-box;
-}
 
-.product-item p {
+
+.product-item  {
   margin-top: auto; /* отодвигает цену вниз */
   font-size: 1rem;
   color: #777;
@@ -132,11 +126,12 @@ const addToCart = (product) => {
 }
 
 
-.product-item img {
-  max-width: 100%;
-  height: auto;
-  margin-bottom: 10px;
-  border-radius: 5px;
+.product-item img,
+.footer-socials img {
+  width: 150px;
+  height: 150px;
+  object-fit: contain;
+  border-radius: 8px;
 }
 
 .product-item h3 {
