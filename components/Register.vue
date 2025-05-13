@@ -1,26 +1,31 @@
 <template>
+  <div class="page-container">
     <div class="register-form">
-        <h2>Регистрация</h2>
-        <form @submit.prevent="register">
-            <div class="form-group">
-                <label for="name">Имя:</label>
-                <input type="text" id="name" v-model="name" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" v-model="email" required>
-            </div>
-            <div class="form-group">
-                <label for="username">Имя пользователя:</label>
-                <input type="text" id="username" v-model="username" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Пароль:</label>
-                <input type="password" id="password" v-model="password" required>
-            </div>
-            <button type="submit">Зарегистрироваться</button>
-        </form>
+      <h2>Регистрация</h2>
+      <form @submit.prevent="register">
+        <div class="form-group">
+          <label for="name">Имя:</label>
+          <input type="text" id="name" v-model="name" required />
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" v-model="email" required />
+        </div>
+        <div class="form-group">
+          <label for="username">Имя пользователя:</label>
+          <input type="text" id="username" v-model="username" required />
+        </div>
+        <div class="form-group">
+          <label for="password">Пароль:</label>
+          <input type="password" id="password" v-model="password" required />
+        </div>
+        <button type="submit">Зарегистрироваться</button>
+      </form>
     </div>
+    <footer class="site-footer">
+      © 2025 Магазин LevelUP. Все права защищены.
+    </footer>
+  </div>
 </template>
 
 <script setup>
@@ -36,22 +41,30 @@ const username = ref('');
 const password = ref('');
 
 const register = () => {
-    const userData = {
-        name: name.value,
-        email: email.value,
-        username: username.value,
-        password: password.value
-    };
+  const userData = {
+    name: name.value,
+    email: email.value,
+    username: username.value,
+    password: password.value
+  };
 
-    localStorage.setItem('user', JSON.stringify(userData));
+  localStorage.setItem('user', JSON.stringify(userData));
 
-    // Автоматический вход после регистрации
-    isLoggedIn.value = true;
-    router.push({ name: 'home' });
+  // Автоматический вход после регистрации
+  isLoggedIn.value = true;
+  router.push({ name: 'home' });
 };
 </script>
-<style setup>
+
+<style scoped>
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 .register-form {
+  flex-grow: 1;
   max-width: 400px;
   margin: 40px auto;
   background: #fff;
@@ -61,6 +74,8 @@ const register = () => {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
   transition: box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .register-form:hover {
@@ -77,6 +92,8 @@ const register = () => {
 
 .form-group {
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .form-group label {
@@ -129,4 +146,14 @@ button[type="submit"]:active {
   transform: translateY(0);
 }
 
+.site-footer {
+  background-color: #673ab7;
+  color: white;
+  text-align: center;
+  padding: 15px 10px;
+  font-weight: 600;
+  font-size: 1rem;
+  margin-top: auto; /* прижимает футер к низу */
+  user-select: none;
+}
 </style>
